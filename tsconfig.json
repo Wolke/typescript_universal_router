@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "sourceRoot": "index.tsx",
+        "outFile": "index.js",
+        "jsx": "react",
+        "inlineSourceMap": true,
+        "module": "commonjs"       
+    }
+}
