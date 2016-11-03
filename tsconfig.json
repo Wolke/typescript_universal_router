@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "sourceRoot": "index.tsx",
-        "outFile": "index.js",
+        "rootDir": "src",
+        "outDir": "dist",
         "jsx": "react",
         "inlineSourceMap": true,
         "module": "commonjs"       

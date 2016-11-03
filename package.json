@@ -10,12 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/bluebird": "^3.0.35",
     "bluebird": "^3.4.6",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "universal-router": "^2.0.0"
   },
   "devDependencies": {
+    "@types/universal-router": "^0.0.2",
+    "@types/bluebird": "^3.0.35",
     "@types/react": "^0.14.44",
     "@types/react-dom": "^0.14.18"
   }
