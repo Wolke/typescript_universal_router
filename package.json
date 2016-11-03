@@ -1,0 +1,22 @@
+{
+  "name": "uu2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "universal-router": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^0.14.44",
+    "@types/react-dom": "^0.14.18",
+    "@types/universal-router": "^0.0.2"
+  }
+}
