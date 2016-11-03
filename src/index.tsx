@@ -1,6 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+
+import * as ReactDOMServer from 'react-dom/server';
 import { resolve } from 'universal-router';
+
+import * as express from 'express';
 
 const routes = [
   { path: '/one', action: () => <h1>Page One</h1> },
@@ -8,7 +12,17 @@ const routes = [
   { path: '*', action: () => <h1>Not Found</h1> }
 ];
 
-resolve(routes, { path: '/one' }).then(component => {
+const route = resolve(routes, { path: '/one' }).then(component => {
   ReactDOM.render(component, document.body);
-  // renders: <h1>Page One</h1>
 });
+
+
+const app = express();
+
+app.get("*",(res,rep)=>{
+  const data:any = { ...route };
+  data.children = ReactDOM.renderToString(<App context={context}>{route.component}</App>);
+    
+  ReactDOMServer.renderToString();
+
+})

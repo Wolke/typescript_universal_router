@@ -11,14 +11,16 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.4.6",
+    "express": "^4.14.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "universal-router": "^2.0.0"
   },
   "devDependencies": {
-    "@types/universal-router": "^0.0.2",
     "@types/bluebird": "^3.0.35",
+    "@types/express": "^4.0.33",
     "@types/react": "^0.14.44",
-    "@types/react-dom": "^0.14.18"
+    "@types/react-dom": "^0.14.18",
+    "@types/universal-router": "^0.0.2"
   }
 }
