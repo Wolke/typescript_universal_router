@@ -4,6 +4,7 @@
         "outDir": "dist",
         "jsx": "react",
         "inlineSourceMap": true,
-        "module": "commonjs"       
+        "target": "ES6",
+        "module": "commonjs"
     }
 }
