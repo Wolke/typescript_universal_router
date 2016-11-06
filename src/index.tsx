@@ -42,11 +42,11 @@ app.get("*",async (req,rep)=>{
       };
     },
   };
-   var conteact = {
-    path: '/conteact',
+   var contact = {
+    path: '/contact',
     action() {
 
-      let title = "conteact";
+      let title = "contact";
 
       return {
         title ,
@@ -72,7 +72,7 @@ const rs = {
   path :"/",
   children : [
     home,
-    conteact,
+    contact,
     r
 
   ],
