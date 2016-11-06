@@ -1,93 +1,100 @@
 "use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments)).next());
+    });
+};
+const React = require('react');
+const react_1 = require('react');
+const ReactDOMServer = require('react-dom/server');
 const universal_router_1 = require('universal-router');
 const express = require('express');
-// const routes = [
-//   { path: '/one', action: () => <h1>Page One</h1> },
-//   { path: '/two', action: () => <h1>Page Two</h1> },
-//   { path: '*', action: () => <h1>Not Found</h1> }
-// ];
-let r1 = {
-    path: "/",
-    // action: (ctx: ActionContext & C, params: Params) => R | Promise<R> | void;
-    action: () => { }
-};
-// const routes = {
-//   path : "/",
-//   children: [
-//     {
-//       path : "/",
-//       action(){
-//         return {
-//           title:"home",
-//           component : <div>Home</div>
-//         }
-//       }
-//     },
-//     {
-//       path : "/contact",
-//       action(){
-//         return {
-//           title:"contact",
-//           component : <div>Contact</div>
-//         }
-//       }
-//     }
-//   ],
-//   action({next}){
-//     const route = next();
-//     route.title = `${route.title || 'Untitled Page'} - gogo`;
-//     route.description = route.description || '';
-//     return route;
-//   } 
-// }
-// const route = resolve(routes, { path: '/one' }).then(component => {
-//   ReactDOM.render(component, document.body);
-// });
-// const route = await resolve(routes, {
-//       ...context,
-//       path: req.path,
-//       query: req.query,
-//     });
+class Hello extends React.Component {
+    constructor() {
+        super();
+    }
+    render() {
+        return React.createElement("h1", null, this.props.title);
+    }
+}
+;
+class App extends React.Component {
+    render() {
+        return react_1.Children.only(this.props.children);
+    }
+}
 const app = express();
-app.get("*", (req, rep) => {
-    // export interface Route<C, R> {
-    //   path: string;
-    //   action: (ctx: ActionContext & C, params: Params) => R | Promise<R> | void;
-    //   children?: Routes<C, R>;
-    // }
-    let home = {
+app.get("*", (req, rep) => __awaiter(this, void 0, void 0, function* () {
+    var home = {
+        path: '/',
+        action() {
+            let title = "home";
+            return {
+                title,
+                component: React.createElement(Hello, {title: title}),
+            };
+        },
+    };
+    var conteact = {
+        path: '/conteact',
+        action() {
+            let title = "conteact";
+            return {
+                title,
+                component: React.createElement(Hello, {title: title}),
+            };
+        },
+    };
+    var r = {
+        path: '*',
+        action() {
+            let title = "***";
+            return {
+                title,
+                component: React.createElement(Hello, {title: title}),
+            };
+        },
+    };
+    const rs = {
         path: "/",
-        action: () => {
-            return {
-                title: 'home',
-                component: "<h1>home</h1>",
-            };
+        children: [
+            home,
+            conteact,
+            r
+        ],
+        action({ next }) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const route = yield next();
+                // console.log(route);
+                route.title = `${route.title || 'Untitled Page'} - Great`;
+                route.description = route.description || '';
+                return route;
+            });
         }
     };
-    let hi = {
-        path: "/hi",
-        action: () => {
-            return {
-                title: 'hi',
-                component: "<h1>hi</h1>",
-            };
-        }
-    };
-    let rs = [home, hi];
-    const route = universal_router_1.resolve(rs, req.url);
-    route.then((data) => {
-        // console.log(data);
-        rep.send(data.component);
+    function Html({ title }) {
+        return React.createElement("div", null, title);
+    }
+    // const route = resolve( r , req.url);
+    const route = yield universal_router_1.resolve(rs, {
+        path: req.url
     });
-    // const routes = [r1];
-    // const route = resolve(routes,"/");
-    // const data = { ...route } ;
-    // data.children = ReactDOMServer.renderToString(<div >{route.component}</div>);
-    // rep.send(ReactDOMServer.renderToString(<div >{route.component}</div>));
-    // const data:any = { ...route };
-    // ReactDOMServer.renderToString();
-});
-app.listen(3000, () => {
+    const data = Object.assign(route);
+    const html = ReactDOMServer.renderToStaticMarkup(React.createElement(Html, __assign({}, data)));
+    rep.send(html);
+}));
+app.listen(3030, () => {
     console.log("ok");
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFJQSxtQ0FBd0Isa0JBQWtCLENBQUMsQ0FBQTtBQUUzQyxNQUFZLE9BQU8sV0FBTSxTQUFTLENBQUMsQ0FBQTtBQUVuQyxtQkFBbUI7QUFDbkIsdURBQXVEO0FBQ3ZELHVEQUF1RDtBQUN2RCxvREFBb0Q7QUFDcEQsS0FBSztBQUVMLElBQUksRUFBRSxHQUFHO0lBQ0wsSUFBSSxFQUFFLEdBQUc7SUFDVCw2RUFBNkU7SUFDN0UsTUFBTSxFQUFFLFFBQUssQ0FBQztDQUVmLENBQUE7QUFJSCxtQkFBbUI7QUFDbkIsZ0JBQWdCO0FBQ2hCLGdCQUFnQjtBQUNoQixRQUFRO0FBQ1Isb0JBQW9CO0FBQ3BCLGtCQUFrQjtBQUNsQixtQkFBbUI7QUFDbkIsMEJBQTBCO0FBQzFCLHdDQUF3QztBQUN4QyxZQUFZO0FBQ1osVUFBVTtBQUNWLFNBQVM7QUFDVCxRQUFRO0FBQ1IsMkJBQTJCO0FBQzNCLGtCQUFrQjtBQUNsQixtQkFBbUI7QUFDbkIsNkJBQTZCO0FBQzdCLDJDQUEyQztBQUMzQyxZQUFZO0FBQ1osVUFBVTtBQUNWLFFBQVE7QUFDUixPQUFPO0FBQ1Asb0JBQW9CO0FBQ3BCLDRCQUE0QjtBQUM1QixnRUFBZ0U7QUFDaEUsbURBQW1EO0FBQ25ELG9CQUFvQjtBQUVwQixPQUFPO0FBQ1AsSUFBSTtBQUdKLHNFQUFzRTtBQUN0RSwrQ0FBK0M7QUFDL0MsTUFBTTtBQUNOLHdDQUF3QztBQUN4QyxvQkFBb0I7QUFDcEIsd0JBQXdCO0FBQ3hCLDBCQUEwQjtBQUMxQixVQUFVO0FBSVYsTUFBTSxHQUFHLEdBQUcsT0FBTyxFQUFFLENBQUM7QUFHdEIsR0FBRyxDQUFDLEdBQUcsQ0FBQyxHQUFHLEVBQUMsQ0FBQyxHQUFHLEVBQUMsR0FBRztJQUNsQixpQ0FBaUM7SUFDakMsa0JBQWtCO0lBQ2xCLCtFQUErRTtJQUMvRSw2QkFBNkI7SUFDN0IsSUFBSTtJQUVKLElBQUksSUFBSSxHQUFHO1FBQ1QsSUFBSSxFQUFHLEdBQUc7UUFDVixNQUFNLEVBQUU7WUFDTixNQUFNLENBQUM7Z0JBQ1AsS0FBSyxFQUFFLE1BQU07Z0JBQ2IsU0FBUyxFQUFFLGVBQWU7YUFDM0IsQ0FBQztRQUNGLENBQUM7S0FDRixDQUFDO0lBQ0YsSUFBSSxFQUFFLEdBQUc7UUFDUCxJQUFJLEVBQUcsS0FBSztRQUNaLE1BQU0sRUFBRTtZQUNOLE1BQU0sQ0FBQztnQkFDUCxLQUFLLEVBQUUsSUFBSTtnQkFDWCxTQUFTLEVBQUUsYUFBYTthQUN6QixDQUFDO1FBQ0YsQ0FBQztLQUNGLENBQUM7SUFFRixJQUFJLEVBQUUsR0FBRyxDQUFDLElBQUksRUFBQyxFQUFFLENBQUMsQ0FBQztJQUVuQixNQUFNLEtBQUssR0FBRywwQkFBTyxDQUFFLEVBQUUsRUFBRSxHQUFHLENBQUMsR0FBRyxDQUFFLENBQUM7SUFFckMsS0FBSyxDQUFDLElBQUksQ0FDSixDQUFDLElBQUk7UUFDRCxxQkFBcUI7UUFDckIsR0FBRyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUE7SUFDNUIsQ0FBQyxDQUNOLENBQUM7SUFDRix1QkFBdUI7SUFFdkIscUNBQXFDO0lBRXJDLDhCQUE4QjtJQUM5QixnRkFBZ0Y7SUFDaEYsMEVBQTBFO0lBRTFFLGlDQUFpQztJQUVqQyxtQ0FBbUM7QUFHckMsQ0FBQyxDQUFDLENBQUM7QUFFSCxHQUFHLENBQUMsTUFBTSxDQUFDLElBQUksRUFBQztJQUNkLE9BQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLENBQUE7QUFDbkIsQ0FBQyxDQUFDLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsTUFBWSxLQUFLLFdBQU0sT0FBTyxDQUFDLENBQUE7QUFDL0Isd0JBQW9DLE9BQU8sQ0FBQyxDQUFBO0FBRzVDLE1BQVksY0FBYyxXQUFNLGtCQUFrQixDQUFDLENBQUE7QUFDbkQsbUNBQXdCLGtCQUFrQixDQUFDLENBQUE7QUFFM0MsTUFBWSxPQUFPLFdBQU0sU0FBUyxDQUFDLENBQUE7QUFHbkMsb0JBQW9CLEtBQUssQ0FBQyxTQUFTO0lBQ2pDO1FBQ0UsT0FBTyxDQUFDO0lBQ1YsQ0FBQztJQUNELE1BQU07UUFDSixNQUFNLENBQUMscUJBQUMsRUFBRSxTQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsS0FBTSxDQUFLLENBQUE7SUFDcEMsQ0FBQztBQUNILENBQUM7QUFBQSxDQUFDO0FBRUYsa0JBQWtCLEtBQUssQ0FBQyxTQUFTO0lBQy9CLE1BQU07UUFDSixNQUFNLENBQUMsZ0JBQVEsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxRQUFRLENBQUMsQ0FBQTtJQUMzQyxDQUFDO0FBQ0gsQ0FBQztBQUVELE1BQU0sR0FBRyxHQUFHLE9BQU8sRUFBRSxDQUFDO0FBTXRCLEdBQUcsQ0FBQyxHQUFHLENBQUMsR0FBRyxFQUFDLENBQU8sR0FBRyxFQUFDLEdBQUc7SUFDeEIsSUFBSSxJQUFJLEdBQUc7UUFDVCxJQUFJLEVBQUUsR0FBRztRQUNULE1BQU07WUFFSixJQUFJLEtBQUssR0FBRyxNQUFNLENBQUM7WUFFbkIsTUFBTSxDQUFDO2dCQUNMLEtBQUs7Z0JBQ0wsU0FBUyxFQUFFLG9CQUFDLEtBQUssR0FBQyxLQUFLLEVBQUUsS0FBTSxFQUFHO2FBQ25DLENBQUM7UUFDSixDQUFDO0tBQ0YsQ0FBQztJQUNELElBQUksUUFBUSxHQUFHO1FBQ2QsSUFBSSxFQUFFLFdBQVc7UUFDakIsTUFBTTtZQUVKLElBQUksS0FBSyxHQUFHLFVBQVUsQ0FBQztZQUV2QixNQUFNLENBQUM7Z0JBQ0wsS0FBSztnQkFDTCxTQUFTLEVBQUUsb0JBQUMsS0FBSyxHQUFDLEtBQUssRUFBRSxLQUFNLEVBQUc7YUFDbkMsQ0FBQztRQUNKLENBQUM7S0FDRixDQUFDO0lBQ0gsSUFBSSxDQUFDLEdBQUc7UUFDUCxJQUFJLEVBQUUsR0FBRztRQUNULE1BQU07WUFFSixJQUFJLEtBQUssR0FBRyxLQUFLLENBQUM7WUFFbEIsTUFBTSxDQUFDO2dCQUNMLEtBQUs7Z0JBQ0wsU0FBUyxFQUFFLG9CQUFDLEtBQUssR0FBQyxLQUFLLEVBQUUsS0FBTSxFQUFHO2FBQ25DLENBQUM7UUFDSixDQUFDO0tBQ0YsQ0FBQztJQUdGLE1BQU0sRUFBRSxHQUFHO1FBQ1QsSUFBSSxFQUFFLEdBQUc7UUFDVCxRQUFRLEVBQUc7WUFDVCxJQUFJO1lBQ0osUUFBUTtZQUNSLENBQUM7U0FFRjtRQUNLLE1BQU0sQ0FBQyxFQUFDLElBQUksRUFBQzs7Z0JBQ2pCLE1BQU0sS0FBSyxHQUFHLE1BQU0sSUFBSSxFQUFFLENBQUM7Z0JBQzNCLHNCQUFzQjtnQkFDdEIsS0FBSyxDQUFDLEtBQUssR0FBSSxHQUFHLEtBQUssQ0FBQyxLQUFLLElBQUksZUFBZSxVQUFVLENBQUM7Z0JBQzNELEtBQUssQ0FBQyxXQUFXLEdBQUcsS0FBSyxDQUFDLFdBQVcsSUFBSSxFQUFFLENBQUM7Z0JBQzVDLE1BQU0sQ0FBQyxLQUFLLENBQUM7WUFFZixDQUFDO1NBQUE7S0FDRixDQUFBO0lBRUQsY0FBYyxFQUFDLEtBQUssRUFBQztRQUNuQixNQUFNLENBQUMscUJBQUMsR0FBRyxTQUFFLEtBQU0sQ0FBTSxDQUFBO0lBQzNCLENBQUM7SUFDQyx1Q0FBdUM7SUFDdkMsTUFBTSxLQUFLLEdBQUcsTUFBTSwwQkFBTyxDQUFXLEVBQUUsRUFBRztRQUN6QyxJQUFJLEVBQUMsR0FBRyxDQUFDLEdBQUc7S0FDYixDQUFDLENBQUM7SUFHSCxNQUFNLElBQUksR0FBRyxNQUFNLENBQUMsTUFBTSxDQUFDLEtBQUssQ0FBQyxDQUFDO0lBRWxDLE1BQU0sSUFBSSxHQUFHLGNBQWMsQ0FBQyxvQkFBb0IsQ0FBQyxvQkFBQyxJQUFJLGVBQUssSUFBSSxFQUFJLENBQUMsQ0FBQztJQUNyRSxHQUFHLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDO0FBR2pCLENBQUMsQ0FBQSxDQUFDLENBQUM7QUFFSCxHQUFHLENBQUMsTUFBTSxDQUFDLElBQUksRUFBQztJQUNkLE9BQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLENBQUE7QUFDbkIsQ0FBQyxDQUFDLENBQUMifQ==
