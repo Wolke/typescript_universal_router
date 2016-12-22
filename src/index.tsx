@@ -25,17 +25,11 @@ class App extends React.Component<{},{}>{
 
 const app = express();
 
-
-
-
-
 app.get("*",async (req,rep)=>{
   var home = {
     path: '/',
     action() {
-
       let title = "home";
-
       return {
         title ,
         component: <Hello title={title} />,
@@ -45,9 +39,7 @@ app.get("*",async (req,rep)=>{
    var contact = {
     path: '/contact',
     action() {
-
       let title = "contact";
-
       return {
         title ,
         component: <Hello title={title} />,
